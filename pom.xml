@@ -17,6 +17,8 @@
         <java.version>17</java.version>
         <liquibase.version>4.23.0</liquibase.version>
         <liquibase-hibernate6.version>4.23.0</liquibase-hibernate6.version>
+        <liquibase.propertyFile>liquibase.properties</liquibase.propertyFile>
+        <maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
     </properties>
     <dependencies>
         <dependency>
@@ -71,15 +73,8 @@
                 <artifactId>liquibase-maven-plugin</artifactId>
                 <version>${liquibase.version}</version>
                 <configuration>
-                    <driver>org.postgresql.Driver</driver>
-                    <url>jdbc:postgresql://localhost:5432/postgres</url>
-                    <username>root</username>
-                    <password>1234</password>
-                    <changeLogFile>db/changelog/master.xml</changeLogFile>
-                    <outputChangeLogFile>dbchangelog.xml</outputChangeLogFile>
-                    <diffChangeLogFile>
-                        ${project.basedir}/src/main/resources/db/migrations/${maven.build.timestamp}_changelog.xml
-                    </diffChangeLogFile>
+                    <diffChangeLogFile>${project.basedir}/src/main/resources/db/migrations/${maven.build.timestamp}_changelog.xml</diffChangeLogFile>
+                    <propertyFile>${liquibase.propertyFile}</propertyFile>
                 </configuration>
 
             </plugin>
