@@ -26,8 +26,8 @@ public class MatchService {
         return matchRepository.findById(id).orElseThrow();
     }
 
-    public void saveNewMatch(Match match) {
+    public Long saveNewMatch(Match match) {
         match.setId(null);
-        matchRepository.save(match);
+        return matchRepository.save(match).getId();
     }
 }

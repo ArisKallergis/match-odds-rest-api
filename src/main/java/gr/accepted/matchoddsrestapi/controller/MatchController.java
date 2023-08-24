@@ -3,8 +3,12 @@ package gr.accepted.matchoddsrestapi.controller;
 import gr.accepted.matchoddsrestapi.model.entity.Match;
 import gr.accepted.matchoddsrestapi.model.response.AllMatchesResponse;
 import gr.accepted.matchoddsrestapi.service.MatchService;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,18 +22,25 @@ public class MatchController {
     }
 
     @GetMapping
-    AllMatchesResponse getAllMatches() {
-        return new AllMatchesResponse(matchService.getAllMatches());
+    ResponseEntity<AllMatchesResponse> getAllMatches() {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new AllMatchesResponse(matchService.getAllMatches()));
     }
 
     @GetMapping("/{id}")
-    Match getMatchById(@PathVariable Long id) {
-        return matchService.getMatchById(id);
+    ResponseEntity<Match> getMatchById(@PathVariable Long id) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(matchService.getMatchById(id));
     }
 
     @PostMapping
-    ResponseEntity<?> saveNewMatch(@RequestBody Match match) {
-        matchService.saveNewMatch(match);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    ResponseEntity<?> saveNewMatch(@RequestBody Match match, HttpServletRequest request) {
+        Long createdId = matchService.saveNewMatch(match);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .header(HttpHeaders.LOCATION, request.getRequestURI() + "/" + createdId)
+                .build();
     }
 }
