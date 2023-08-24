@@ -2,8 +2,11 @@ package gr.accepted.matchoddsrestapi.service;
 
 
 import gr.accepted.matchoddsrestapi.model.entity.MatchOdd;
+import gr.accepted.matchoddsrestapi.model.response.AllMatchOddsResponse;
 import gr.accepted.matchoddsrestapi.repository.MatchOddRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class MatchOddService {
@@ -14,9 +17,7 @@ public class MatchOddService {
         this.matchOddRepository = matchOddRepository;
     }
 
-    public MatchOdd saveSomething() {
-        MatchOdd matchOdd = new MatchOdd("Some name");
-        matchOddRepository.save(matchOdd);
-        return matchOdd;
+    public List<MatchOdd> getAllMatchOdds() {
+        return matchOddRepository.findAll();
     }
 }

@@ -1,23 +1,23 @@
 package gr.accepted.matchoddsrestapi.model.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
+
+import java.math.BigDecimal;
 
 @Entity
 @Data
 public class MatchOdd {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "match_odd_generator")
+    @SequenceGenerator(name = "match_odd_generator", sequenceName = "match_odd_seq", allocationSize = 1)
     private Long id;
+    private Character specifier;
+    private BigDecimal odd;
 
-    private String name;
-    private Integer age;
+    @ManyToOne
+    @JoinColumn(name = "match_id")
+    private Match match;
 
-    public MatchOdd(String name) {
-        this.name = name;
-    }
 }

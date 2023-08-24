@@ -19,7 +19,7 @@ public class MatchController {
 
     @GetMapping
     AllMatchesResponse getAllMatches() {
-        return matchService.getAllMatches();
+        return new AllMatchesResponse(matchService.getAllMatches());
     }
 
     @GetMapping("/{id}")
@@ -32,10 +32,4 @@ public class MatchController {
         matchService.saveNewMatch(match);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
-
-//    @PutMapping("/{id}")
-//    ResponseEntity<?> saveNewMatch(@RequestBody Match match) {
-//        matchService.saveNewMatch(match);
-//        return new ResponseEntity<>(HttpStatus.CREATED);
-//    }
 }

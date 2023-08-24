@@ -1,11 +1,13 @@
 package gr.accepted.matchoddsrestapi.model.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import gr.accepted.matchoddsrestapi.model.Sport;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.List;
 
 @Entity
 @Data
@@ -13,12 +15,18 @@ import lombok.NoArgsConstructor;
 public class Match {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "match_generator")
+    @SequenceGenerator(name = "match_generator", sequenceName = "match_seq", allocationSize = 1)
     private Long id;
-    private String name;
-    private Integer age;
+    private String description;
+    private LocalDate match_date;
+    private LocalTime match_time;
+    @Column(name = "team_a")
+    private String teamA;
+    @Column(name = "team_b")
+    private String teamB;
+    private Sport sport;
 
-    public Match(String name) {
-        this.name = name;
-    }
+    @OneToMany(mappedBy = "match")
+    private List<MatchOdd> matchOdds;
 }
