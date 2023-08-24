@@ -27,9 +27,7 @@ public class MatchService {
     }
 
     public void saveNewMatch(Match match) {
-        if (match.getId() != null) {
-            match.setId(null);
-        }
+        match.setId(null);
         matchRepository.save(match);
     }
 }
