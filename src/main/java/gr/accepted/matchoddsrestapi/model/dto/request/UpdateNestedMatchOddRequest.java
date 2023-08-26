@@ -2,6 +2,7 @@ package gr.accepted.matchoddsrestapi.model.dto.request;
 
 import gr.accepted.matchoddsrestapi.model.entity.Match;
 import gr.accepted.matchoddsrestapi.model.entity.MatchOdd;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,7 +23,7 @@ public class UpdateNestedMatchOddRequest {
 
     private Long matchId;
 
-    public MatchOdd toEntity(Match match) {
+    public MatchOdd toEntity(@Valid Match match) {
         return new MatchOdd(
                 this.id,
                 this.specifier,

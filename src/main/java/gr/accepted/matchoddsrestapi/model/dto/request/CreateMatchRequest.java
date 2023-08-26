@@ -41,7 +41,7 @@ public class CreateMatchRequest {
     private Sport sport;
 
     @Valid
-    private List<@Valid CreateMatchOddRequest> matchOdds = new ArrayList<>();
+    private List<@Valid CreateNestedMatchOddRequest> matchOdds = new ArrayList<>();
 
     public Match toEntity() {
         Match match = new Match();

@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 
 @Data
 @NoArgsConstructor
-public class CreateMatchOddRequest {
+public class CreateNestedMatchOddRequest {
 
     @NotNull
     @Size(min = 1, max = 1)
@@ -23,12 +23,9 @@ public class CreateMatchOddRequest {
     @Positive
     private BigDecimal odd;
 
-    @NotNull
     private Long matchId;
 
-    public MatchOdd toEntity() {
-        Match match = new Match();
-        match.setId(this.matchId);
+    public MatchOdd toEntity(@Valid Match match) {
         return new MatchOdd(
                 null,
                 this.specifier,
