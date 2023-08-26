@@ -5,6 +5,7 @@ import gr.accepted.matchoddsrestapi.model.dto.request.UpdateMatchOddRequest;
 import gr.accepted.matchoddsrestapi.model.dto.response.AllMatchOddsResponse;
 import gr.accepted.matchoddsrestapi.model.dto.response.MatchOddResponse;
 import gr.accepted.matchoddsrestapi.service.MatchOddService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "Match Odd", description = "crud operations for match odd entities")
 @RestController
 @RequestMapping(value = "match-odds")
 public class MatchOddController {

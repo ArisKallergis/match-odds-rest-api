@@ -13,6 +13,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
@@ -23,6 +24,7 @@ import java.util.List;
 public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {IdMismatchException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected ResponseEntity<?> handleIdMismatchException(IdMismatchException e, HttpServletRequest request) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
@@ -35,6 +37,7 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(value = {EntityNotFoundException.class})
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     protected ResponseEntity<?> handleEntityNoFoundException(EntityNotFoundException e, HttpServletRequest request) {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
@@ -47,12 +50,13 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(value = {ConstraintViolationException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected ResponseEntity<?> handleEntityNoFoundException(ConstraintViolationException e, HttpServletRequest request) {
         List<String> constraintViolationErrors = e.getConstraintViolations()
                 .stream().map((fieldError) -> fieldError.getPropertyPath() + ": " + fieldError.getMessage()).toList();
 
         return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
+                .status(HttpStatus.BAD_REQUEST)
                 .body(new ApiError(
                         "Invalid Input",
                         "invalidInput",
@@ -62,6 +66,7 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @Override
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException e, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         List<String> validationErrors = e.getBindingResult().getFieldErrors()
                 .stream().map((fieldError) -> fieldError.getField() + ": " + fieldError.getDefaultMessage()).toList();
@@ -77,6 +82,7 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @Override
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)

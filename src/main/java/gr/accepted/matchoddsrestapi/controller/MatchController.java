@@ -3,8 +3,8 @@ package gr.accepted.matchoddsrestapi.controller;
 import gr.accepted.matchoddsrestapi.model.dto.request.CreateMatchRequest;
 import gr.accepted.matchoddsrestapi.model.dto.request.UpdateMatchRequest;
 import gr.accepted.matchoddsrestapi.model.dto.response.AllMatchesResponse;
-import gr.accepted.matchoddsrestapi.model.entity.Match;
 import gr.accepted.matchoddsrestapi.service.MatchService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "Match", description = "crud operations for match entities")
 @RestController
 @RequestMapping(value = "matches")
 public class MatchController {
