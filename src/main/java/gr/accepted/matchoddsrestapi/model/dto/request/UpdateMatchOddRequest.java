@@ -3,6 +3,8 @@ package gr.accepted.matchoddsrestapi.model.dto.request;
 import gr.accepted.matchoddsrestapi.model.entity.Match;
 import gr.accepted.matchoddsrestapi.model.entity.MatchOdd;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -15,9 +17,11 @@ public class UpdateMatchOddRequest {
     private Long id;
 
     @NotNull
-    private Character specifier;
+    @Size(min = 1, max = 1)
+    private String specifier;
 
     @NotNull
+    @Positive
     private BigDecimal odd;
 
     @NotNull

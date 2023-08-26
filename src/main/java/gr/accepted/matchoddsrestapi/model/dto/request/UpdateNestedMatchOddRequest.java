@@ -15,7 +15,7 @@ public class UpdateNestedMatchOddRequest {
     private Long id;
 
     @NotNull
-    private Character specifier;
+    private String specifier;
 
     @NotNull
     private BigDecimal odd;

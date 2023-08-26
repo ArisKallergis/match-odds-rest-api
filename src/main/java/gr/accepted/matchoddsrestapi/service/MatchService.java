@@ -11,6 +11,7 @@ import gr.accepted.matchoddsrestapi.model.dto.response.MatchWithDetailsResponse;
 import gr.accepted.matchoddsrestapi.model.entity.Match;
 import gr.accepted.matchoddsrestapi.model.entity.MatchOdd;
 import gr.accepted.matchoddsrestapi.repository.MatchRepository;
+import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -47,7 +48,7 @@ public class MatchService {
     public void updateMatch(UpdateMatchRequest matchRequest, Long id) {
         // Check if matchId in path and body are the same
         if (matchRequest.getId() != null && !matchRequest.getId().equals(id)) {
-            throw new IdMismatchException("Id in path and body not consistent");
+            throw new IdMismatchException("Id in path (" + id + ") and body (" + matchRequest.getId() + ") not consistent");
         }
 
         // Check if match to be updated with given matchId exists
@@ -55,12 +56,15 @@ public class MatchService {
 
         // Check if incoming matchOddIds exist and refer to the match to be updated
         List<Long> existingMatchOddIds = previous.getMatchOdds().stream().map(MatchOdd::getId).toList();
-        List<Long> incomingMatchOddIds = matchRequest.getMatchOdds().stream().map(UpdateNestedMatchOddRequest::getId).filter(Objects::nonNull).toList();
-        for (Long incomingId : incomingMatchOddIds) {
-            if (!existingMatchOddIds.contains(incomingId)) {
-                throw new IdMismatchException("Match odd id non-existent or referring to different match");
-            }
-        }
+
+        matchRequest.getMatchOdds().stream()
+                .map(UpdateNestedMatchOddRequest::getId)
+                .filter(Objects::nonNull)
+                .forEach((incomingId) -> {
+                    if (!existingMatchOddIds.contains(incomingId)) {
+                        throw new IdMismatchException("Match odd id (" + incomingId + ") non-existent or referring to different match");
+                    }
+                });
 
         matchRequest.setId(id);
         matchRepository.save(matchRequest.toEntity());

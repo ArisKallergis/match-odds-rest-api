@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 public class MatchOddResponse {
 
     private Long id;
-    private Character specifier;
+    private String specifier;
     private BigDecimal odd;
     private Long matchId;
 

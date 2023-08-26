@@ -8,15 +8,18 @@ import gr.accepted.matchoddsrestapi.model.dto.request.UpdateMatchOddRequest;
 import gr.accepted.matchoddsrestapi.model.dto.response.AllMatchOddsResponse;
 import gr.accepted.matchoddsrestapi.model.dto.response.MatchOddResponse;
 import gr.accepted.matchoddsrestapi.repository.MatchOddRepository;
+import gr.accepted.matchoddsrestapi.repository.MatchRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 public class MatchOddService {
 
     private final MatchOddRepository matchOddRepository;
+    private final MatchRepository matchRepository;
 
-    public MatchOddService(MatchOddRepository matchOddRepository) {
+    public MatchOddService(MatchOddRepository matchOddRepository, MatchRepository matchRepository) {
         this.matchOddRepository = matchOddRepository;
+        this.matchRepository = matchRepository;
     }
 
     public AllMatchOddsResponse getAllMatchOdds() {
@@ -28,6 +31,7 @@ public class MatchOddService {
     }
 
     public Long saveNewMatchOdd(CreateMatchOddRequest matchOddRequest) {
+        matchRepository.findById(matchOddRequest.getMatchId()).orElseThrow(() -> new EntityNotFoundException("Match with id " + matchOddRequest.getMatchId() + " does not exist"));
         return matchOddRepository.save(matchOddRequest.toEntity()).getId();
     }
 

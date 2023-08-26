@@ -2,11 +2,12 @@ package gr.accepted.matchoddsrestapi.model.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import gr.accepted.matchoddsrestapi.exception.IdMismatchException;
-import gr.accepted.matchoddsrestapi.model.Sport;
+import gr.accepted.matchoddsrestapi.model.enums.Sport;
 import gr.accepted.matchoddsrestapi.model.entity.Match;
 import gr.accepted.matchoddsrestapi.model.entity.MatchOdd;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -20,6 +21,8 @@ import java.util.List;
 public class UpdateMatchRequest {
 
     private Long id;
+
+    @Size(min = 1, max = 255)
     private String description;
 
     @NotNull
@@ -30,9 +33,11 @@ public class UpdateMatchRequest {
     private LocalTime matchTime;
 
     @NotNull
+    @Size(min = 2, max = 10)
     private String teamA;
 
     @NotNull
+    @Size(min = 2, max = 10)
     private String teamB;
 
     @NotNull

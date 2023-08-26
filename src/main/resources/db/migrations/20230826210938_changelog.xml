@@ -1,0 +1,18 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="Aris (generated)" id="1693084182870-1">
+        <addNotNullConstraint columnDataType="date" columnName="match_date" tableName="match" validate="true"/>
+    </changeSet>
+    <changeSet author="Aris (generated)" id="1693084182870-2">
+        <modifyDataType columnName="match_time" newDataType="time" tableName="match"/>
+    </changeSet>
+    <changeSet author="Aris (generated)" id="1693084182870-3">
+        <addNotNullConstraint columnDataType="number(38,2)" columnName="odd" tableName="match_odd" validate="true"/>
+    </changeSet>
+    <changeSet author="Aris (generated)" id="1693084182870-4">
+        <modifyDataType columnName="team_a" newDataType="varchar(10)" tableName="match"/>
+    </changeSet>
+    <changeSet author="Aris (generated)" id="1693084182870-5">
+        <modifyDataType columnName="team_b" newDataType="varchar(10)" tableName="match"/>
+    </changeSet>
+</databaseChangeLog>

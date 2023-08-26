@@ -1,6 +1,6 @@
 package gr.accepted.matchoddsrestapi.model.dto.response;
 
-import gr.accepted.matchoddsrestapi.model.Sport;
+import gr.accepted.matchoddsrestapi.model.enums.Sport;
 import gr.accepted.matchoddsrestapi.model.entity.Match;
 import lombok.Data;
 import lombok.NoArgsConstructor;
