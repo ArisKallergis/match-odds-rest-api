@@ -8,7 +8,6 @@ import gr.accepted.matchoddsrestapi.model.dto.request.UpdateMatchOddRequest;
 import gr.accepted.matchoddsrestapi.model.dto.response.AllMatchOddsResponse;
 import gr.accepted.matchoddsrestapi.model.dto.response.MatchOddResponse;
 import gr.accepted.matchoddsrestapi.repository.MatchOddRepository;
-import gr.accepted.matchoddsrestapi.repository.MatchRepository;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -25,7 +24,7 @@ public class MatchOddService {
     }
 
     public MatchOddResponse getMatchOddById(Long id) {
-        return matchOddRepository.findById(id).map(MatchOddResponse::new).orElseThrow(() -> new EntityNotFoundException("Entity not found"));
+        return matchOddRepository.findById(id).map(MatchOddResponse::new).orElseThrow(() -> new EntityNotFoundException("Match odd with id " + id + " does not exist"));
     }
 
     public Long saveNewMatchOdd(CreateMatchOddRequest matchOddRequest) {
@@ -36,14 +35,14 @@ public class MatchOddService {
         if (matchOddRequest.getId() != null && !matchOddRequest.getId().equals(id)) {
             throw new IdMismatchException("Id in path and both not consistent");
         }
-        matchOddRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Entity not found"));
+        matchOddRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Match odd with id " + id + " does not exist"));
 
         matchOddRequest.setId(id);
         matchOddRepository.save(matchOddRequest.toEntity());
     }
 
     public void deleteMatchOdd(Long id) {
-        matchOddRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Entity not found"));
+        matchOddRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Match odd with id " + id + " does not exist"));
         matchOddRepository.deleteById(id);
     }
 }

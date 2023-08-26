@@ -44,6 +44,6 @@ public class Match {
     @Column(name = "sport")
     private Sport sport;
 
-    @OneToMany(mappedBy = "match", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "match", cascade = {CascadeType.PERSIST, CascadeType.MERGE })
     private List<MatchOdd> matchOdds = new ArrayList<>();
 }

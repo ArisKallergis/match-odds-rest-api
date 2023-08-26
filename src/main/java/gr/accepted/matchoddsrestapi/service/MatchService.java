@@ -37,7 +37,7 @@ public class MatchService {
 
     public MatchWithDetailsResponse getMatchById(Long id) {
         return matchRepository.findById(id).map(MatchWithDetailsResponse::new)
-                .orElseThrow(() -> new EntityNotFoundException("Entity not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Match with id " + id + " does not exist"));
     }
 
     public Long saveNewMatch(@RequestBody CreateMatchRequest matchRequest) {
@@ -47,11 +47,11 @@ public class MatchService {
     public void updateMatch(UpdateMatchRequest matchRequest, Long id) {
         // Check if matchId in path and body are the same
         if (matchRequest.getId() != null && !matchRequest.getId().equals(id)) {
-            throw new IdMismatchException("Id in path and both not consistent");
+            throw new IdMismatchException("Id in path and body not consistent");
         }
 
         // Check if match to be updated with given matchId exists
-        Match previous = matchRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Entity not found"));
+        Match previous = matchRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Match with id " + id + " does not exist"));
 
         // Check if incoming matchOddIds exist and refer to the match to be updated
         List<Long> existingMatchOddIds = previous.getMatchOdds().stream().map(MatchOdd::getId).toList();
@@ -67,7 +67,7 @@ public class MatchService {
     }
 
     public void deleteMatch(Long id) {
-        matchRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Entity not found"));
+        matchRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Match with id " + id + " does not exist"));
         matchRepository.deleteById(id);
     }
 }

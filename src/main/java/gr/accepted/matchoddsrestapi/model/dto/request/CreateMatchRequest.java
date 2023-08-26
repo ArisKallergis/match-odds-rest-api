@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import gr.accepted.matchoddsrestapi.model.Sport;
 import gr.accepted.matchoddsrestapi.model.entity.Match;
 import gr.accepted.matchoddsrestapi.model.entity.MatchOdd;
-import jakarta.persistence.OneToMany;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -42,9 +41,7 @@ public class CreateMatchRequest {
 
     public Match toEntity() {
         Match match = new Match();
-        List<MatchOdd> matchOdds = this.matchOdds.stream().map((matchOddRequest) -> {
-            return matchOddRequest.toEntity(match);
-        }).toList();
+        List<MatchOdd> matchOdds = this.matchOdds.stream().map((matchOddRequest) -> matchOddRequest.toEntity(match)).toList();
 
         match.setId(null);
         match.setDescription(this.getDescription());
