@@ -1,14 +1,15 @@
 package gr.accepted.matchoddsrestapi.controller;
 
+import gr.accepted.matchoddsrestapi.model.dto.request.CreateMatchRequest;
+import gr.accepted.matchoddsrestapi.model.dto.request.UpdateMatchRequest;
+import gr.accepted.matchoddsrestapi.model.dto.response.AllMatchesResponse;
 import gr.accepted.matchoddsrestapi.model.entity.Match;
-import gr.accepted.matchoddsrestapi.model.response.AllMatchesResponse;
 import gr.accepted.matchoddsrestapi.service.MatchService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,26 +22,42 @@ public class MatchController {
         this.matchService = matchService;
     }
 
-    @GetMapping
-    ResponseEntity<AllMatchesResponse> getAllMatches() {
+    @GetMapping(produces = "application/json")
+    ResponseEntity<AllMatchesResponse<?>> getAllMatches(@RequestParam(defaultValue = "false") Boolean withDetails) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(new AllMatchesResponse(matchService.getAllMatches()));
+                .body(matchService.getAllMatches(withDetails));
     }
 
-    @GetMapping("/{id}")
-    ResponseEntity<Match> getMatchById(@PathVariable Long id) {
+    @GetMapping(value = "/{id}", produces = "application/json")
+    ResponseEntity<?> getMatchById(@PathVariable Long id) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(matchService.getMatchById(id));
     }
 
-    @PostMapping
-    ResponseEntity<?> saveNewMatch(@RequestBody Match match, HttpServletRequest request) {
-        Long createdId = matchService.saveNewMatch(match);
+    @PostMapping(consumes = "application/json")
+    ResponseEntity<?> createNewMatch(@RequestBody @Valid CreateMatchRequest matchRequest, HttpServletRequest request) {
+        Long createdId = matchService.saveNewMatch(matchRequest);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .header(HttpHeaders.LOCATION, request.getRequestURI() + "/" + createdId)
+                .build();
+    }
+
+    @PutMapping(value = "/{id}", consumes = "application/json", produces = "application/json")
+    ResponseEntity<?> updateMatch(@RequestBody @Valid UpdateMatchRequest matchRequest, @PathVariable Long id) {
+        matchService.updateMatch(matchRequest, id);
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT)
+                .build();
+    }
+
+    @DeleteMapping(value = "/{id}")
+    ResponseEntity<?> deleteMatch(@PathVariable Long id) throws Exception {
+        matchService.deleteMatch(id);
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT)
                 .build();
     }
 }

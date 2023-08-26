@@ -1,12 +1,15 @@
 package gr.accepted.matchoddsrestapi.service;
 
 
-import gr.accepted.matchoddsrestapi.model.entity.MatchOdd;
-import gr.accepted.matchoddsrestapi.model.response.AllMatchOddsResponse;
+import gr.accepted.matchoddsrestapi.exception.EntityNotFoundException;
+import gr.accepted.matchoddsrestapi.exception.IdMismatchException;
+import gr.accepted.matchoddsrestapi.model.dto.request.CreateMatchOddRequest;
+import gr.accepted.matchoddsrestapi.model.dto.request.UpdateMatchOddRequest;
+import gr.accepted.matchoddsrestapi.model.dto.response.AllMatchOddsResponse;
+import gr.accepted.matchoddsrestapi.model.dto.response.MatchOddResponse;
 import gr.accepted.matchoddsrestapi.repository.MatchOddRepository;
+import gr.accepted.matchoddsrestapi.repository.MatchRepository;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class MatchOddService {
@@ -17,7 +20,30 @@ public class MatchOddService {
         this.matchOddRepository = matchOddRepository;
     }
 
-    public List<MatchOdd> getAllMatchOdds() {
-        return matchOddRepository.findAll();
+    public AllMatchOddsResponse getAllMatchOdds() {
+        return new AllMatchOddsResponse(matchOddRepository.findAll().stream().map(MatchOddResponse::new).toList());
+    }
+
+    public MatchOddResponse getMatchOddById(Long id) {
+        return matchOddRepository.findById(id).map(MatchOddResponse::new).orElseThrow(() -> new EntityNotFoundException("Entity not found"));
+    }
+
+    public Long saveNewMatchOdd(CreateMatchOddRequest matchOddRequest) {
+        return matchOddRepository.save(matchOddRequest.toEntity()).getId();
+    }
+
+    public void updateMatchOdd(UpdateMatchOddRequest matchOddRequest, Long id) {
+        if (matchOddRequest.getId() != null && !matchOddRequest.getId().equals(id)) {
+            throw new IdMismatchException("Id in path and both not consistent");
+        }
+        matchOddRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Entity not found"));
+
+        matchOddRequest.setId(id);
+        matchOddRepository.save(matchOddRequest.toEntity());
+    }
+
+    public void deleteMatchOdd(Long id) {
+        matchOddRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Entity not found"));
+        matchOddRepository.deleteById(id);
     }
 }
