@@ -1,0 +1,459 @@
+{
+	"info": {
+		"_postman_id": "f987de34-0e90-4a7e-b6b5-ec3c4eb3aae7",
+		"name": "Match Odds API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13135483",
+		"_collection_link": "https://accepted-mock-team.postman.co/workspace/Accepted~3ece7d0b-a42c-4a80-889a-45fa29e3de35/collection/13135483-f987de34-0e90-4a7e-b6b5-ec3c4eb3aae7?action=share&source=collection_link&creator=13135483"
+	},
+	"item": [
+		{
+			"name": "Matches",
+			"item": [
+				{
+					"name": "Get all matches",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostUrl}}/matches",
+							"host": [
+								"{{hostUrl}}"
+							],
+							"path": [
+								"matches"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all matches with details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostUrl}}/matches?withDetails=true",
+							"host": [
+								"{{hostUrl}}"
+							],
+							"path": [
+								"matches"
+							],
+							"query": [
+								{
+									"key": "withDetails",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get match by id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostUrl}}/matches/:id",
+							"host": [
+								"{{hostUrl}}"
+							],
+							"path": [
+								"matches",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{createdMatchId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add a new match",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let locationHeader = pm.response.headers.find((h) => h.key === \"Location\");\r",
+									"pm.collectionVariables.set(\"createdMatchId\", locationHeader.value.split(\"/\").pop())\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"My description\",\r\n    \"matchDate\": \"24/08/2023\",\r\n    \"matchTime\": \"12:00\",\r\n    \"teamA\":\"OSFP\",\r\n    \"teamB\":\"PAO\",\r\n    \"sport\": \"football\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostUrl}}/matches",
+							"host": [
+								"{{hostUrl}}"
+							],
+							"path": [
+								"matches"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add a new match with match odds",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let locationHeader = pm.response.headers.find((h) => h.key === \"Location\");\r",
+									"pm.collectionVariables.set(\"createdMatchId\", locationHeader.value.split(\"/\").pop())"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"My description\",\r\n    \"matchDate\": \"24/08/2023\",\r\n    \"matchTime\": \"12:00\",\r\n    \"teamA\":\"OSFP\",\r\n    \"teamB\":\"PAO\",\r\n    \"sport\": 1,\r\n    \"matchOdds\": [\r\n        {\r\n            \"specifier\": \"X\",\r\n            \"odd\": 2.5\r\n        },\r\n        {\r\n            \"specifier\": \"W\",\r\n            \"odd\": 2\r\n        },\r\n        {\r\n            \"specifier\": \"L\",\r\n            \"odd\": 2\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostUrl}}/matches",
+							"host": [
+								"{{hostUrl}}"
+							],
+							"path": [
+								"matches"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update a match",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"My description updated\",\r\n    \"matchDate\": \"27/08/2023\",\r\n    \"matchTime\": \"15:00:00\",\r\n    \"teamA\":\"OSFPUpdat\",\r\n    \"teamB\":\"PAOUpdat\",\r\n    \"sport\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostUrl}}/matches/:id",
+							"host": [
+								"{{hostUrl}}"
+							],
+							"path": [
+								"matches",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{createdMatchId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update a match with matchOdds",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"My description updated\",\r\n    \"matchDate\": \"27/08/2023\",\r\n    \"matchTime\": \"15:00:00\",\r\n    \"teamA\":\"OSFPUpd\",\r\n    \"teamB\":\"PAOUpdd\",\r\n    \"sport\": 1,\r\n    \"matchOdds\": [\r\n        {\r\n            \"id\": 8,\r\n            \"specifier\": \"L\",\r\n            \"odd\": 5\r\n        },\r\n        {\r\n            \"id\": 9,\r\n            \"specifier\": \"L\",\r\n            \"odd\": 5\r\n        },\r\n        {\r\n            \"specifier\": \"U\",\r\n            \"odd\": 10\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostUrl}}/matches/:id",
+							"host": [
+								"{{hostUrl}}"
+							],
+							"path": [
+								"matches",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{createdMatchId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a match",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{hostUrl}}/matches/:id",
+							"host": [
+								"{{hostUrl}}"
+							],
+							"path": [
+								"matches",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{createdMatchId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "MatchOdds",
+			"item": [
+				{
+					"name": "Get all match odds",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostUrl}}/match-odds",
+							"host": [
+								"{{hostUrl}}"
+							],
+							"path": [
+								"match-odds"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get match odd by id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostUrl}}/match-odds/:id",
+							"host": [
+								"{{hostUrl}}"
+							],
+							"path": [
+								"match-odds",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{createdMatchOddId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add a new match odd",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let locationHeader = pm.response.headers.find((h) => h.key === \"Location\");\r",
+									"pm.collectionVariables.set(\"createdMatchOddId\", locationHeader.value.split(\"/\").pop())"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"specifier\": \"X\",\r\n    \"odd\": 0.1,\r\n    \"matchId\": {{createdMatchId}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostUrl}}/match-odds",
+							"host": [
+								"{{hostUrl}}"
+							],
+							"path": [
+								"match-odds"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update a match odd",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"specifier\": \"W\",\r\n    \"odd\": 5,\r\n    \"matchId\": {{createdMatchId}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostUrl}}/match-odds/:id",
+							"host": [
+								"{{hostUrl}}"
+							],
+							"path": [
+								"match-odds",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{createdMatchOddId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a match odd",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{hostUrl}}/match-odds/:id",
+							"host": [
+								"{{hostUrl}}"
+							],
+							"path": [
+								"match-odds",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{createdMatchOddId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "hostUrl",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "createdMatchId",
+			"value": ""
+		},
+		{
+			"key": "createdMatchOddId",
+			"value": ""
+		}
+	]
+}
