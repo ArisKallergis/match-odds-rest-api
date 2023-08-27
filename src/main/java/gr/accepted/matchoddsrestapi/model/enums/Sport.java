@@ -1,8 +1,10 @@
 package gr.accepted.matchoddsrestapi.model.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
+@Schema(enumAsRef = true, description = "accepts UPPERCASE, lowercase and integers (counting from 1)")
 @Getter
 public enum Sport {
     FOOTBALL(1),

@@ -5,6 +5,7 @@ import gr.accepted.matchoddsrestapi.exception.IdMismatchException;
 import gr.accepted.matchoddsrestapi.model.enums.Sport;
 import gr.accepted.matchoddsrestapi.model.entity.Match;
 import gr.accepted.matchoddsrestapi.model.entity.MatchOdd;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -22,24 +23,30 @@ public class UpdateMatchRequest {
 
     private Long id;
 
+    @Schema(example = "Some description")
     @Size(min = 1, max = 255)
     private String description;
 
+    @Schema(example = "31/12/2023")
     @NotNull
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate matchDate;
 
+    @Schema(type="string", example = "13:42")
     @NotNull
     private LocalTime matchTime;
 
+    @Schema(example = "OSFP")
     @NotNull
     @Size(min = 2, max = 10)
     private String teamA;
 
+    @Schema(example = "PAO")
     @NotNull
     @Size(min = 2, max = 10)
     private String teamB;
 
+    @Schema(examples = {"FOOTBALL", "football", "1"})
     @NotNull
     private Sport sport;
 
