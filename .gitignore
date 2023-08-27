@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Docker Volumes ###
+/db/
+/.m2/

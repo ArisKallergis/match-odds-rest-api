@@ -1,0 +1,28 @@
+services:
+  postgresql:
+    image: postgres:15.4
+    container_name: match-odds-postgres
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_HOST_AUTH_METHOD=trust
+      - POSTGRES_DB=matchOddsDB
+    ports:
+      - 5433:5432
+    volumes:
+      - ./db:/var/lib/postgresql/data
+  app:
+    container_name: match-odds-app
+    depends_on:
+      - postgresql
+    environment:
+      SPRING_APPLICATION_JSON: '{
+            "spring.datasource.url"  : "jdbc:postgresql://postgresql:5432/matchOddsDB"
+          }'
+    build: .
+    ports:
+      - 8081:8080
+    volumes:
+      - .m2:/root/.m2
+    stdin_open: true
+    tty: true
